@@ -1,11 +1,12 @@
 import pygame
+import functions
 # 8-arrays instead of 1 4-by-4 array
 
 # array representation of 4-by-4 grid
-arr_repr = [[2, 4, 8, 512],
-            [128, 32, 16, 0],
-            [0, 256, 0, 2048],
-            [0, 64, 0, 1024]]
+arr_repr = [[2, 0, 0, 2],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]]
 
 # left and up borders for all the squares on the 4-by-4 grid
 loc = {'00':[50,50], '01':[225,50], '02':[400,50], '03':[575,50],
@@ -30,6 +31,23 @@ while running:
         #print(event)
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                functions.left(arr_repr)
+                functions.random_insert(arr_repr)
+                break
+            elif event.key == pygame.K_RIGHT:
+                functions.right(arr_repr)
+                functions.random_insert(arr_repr)
+                break
+            elif event.key == pygame.K_UP:
+                functions.up(arr_repr)
+                functions.random_insert(arr_repr)
+                break
+            elif event.key == pygame.K_DOWN:
+                functions.down(arr_repr)
+                functions.random_insert(arr_repr)
+                break
 
     # background
     screen.fill((250, 250, 250))
@@ -61,9 +79,13 @@ while running:
     for i in range(0, 4):
         for j in range(0, 4):
             if arr_repr[i][j] == 0:
+                # key = str(i) + str(j)
+                # left, up = loc[key]
+                # tile = pygame.Rect(left+10, up+10, 16, 165)
+                # pygame.draw.rect(screen, (200, 200, 200), tile)
                 pass
-            elif arr_repr[i][j] == 2:
 
+            elif arr_repr[i][j] == 2:
                 # Creating the number tiles
 
                 key=str(i)+str(j)
@@ -177,7 +199,3 @@ while running:
     pygame.display.flip()
 
 pygame.quit()
-
-
-
-
