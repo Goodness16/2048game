@@ -1,15 +1,16 @@
 import random
 
-# arr_repr = [[2, 2, 2, 2],
-#             [0, 2, 0, 0],
-#             [0, 2, 2, 2],
-#             [2, 2, 2, 0]]
-
+# arr_repr = [[2, 0, 0, 0],
+#             [4, 4, 0, 0],
+#             [8, 4, 4, 2],
+#             [4, 8, 2, 16]]
+#
+# score = 0
 
 # right swipe function
-def right(arr_repr):
+def right(arr_repr, score=0, changed=False):
     for i in range(0,4):
-        arr = arr_repr[i]
+        arr = arr_repr[i].copy()
         j=0
         count=0
         while j<len(arr):
@@ -26,6 +27,7 @@ def right(arr_repr):
                 new_arr.append(arr[j])
                 j-=1
             else:
+                score += arr[j]+arr[j-1]
                 new_arr.append(arr[j]+arr[j-1])
                 new_arr.append(0)
                 j-=2
@@ -41,12 +43,17 @@ def right(arr_repr):
             else:
                 j+=1
         new_arr=[0]*count + new_arr
+
+        ## New Lines
+        if new_arr != arr_repr[i]:
+            changed = True
         arr_repr[i] = new_arr
+    return (changed, score)
 
 # left swipe function
-def left(arr_repr):
+def left(arr_repr, score=0, changed=False):
     for i in range(0,4):
-        arr = arr_repr[i]
+        arr = arr_repr[i].copy()
         j = 0
         count = 0
         while j < len(arr):
@@ -64,6 +71,7 @@ def left(arr_repr):
                 j+=1
             else:
                 new_arr.append(arr[j]+arr[j+1])
+                score += arr[j]+arr[j+1]
                 new_arr.append(0)
                 j+=2
         if len(new_arr)<4:
@@ -77,10 +85,17 @@ def left(arr_repr):
             else:
                 j+=1
         new_arr=new_arr + [0]*count
+
+        ## New Lines
+        if new_arr != arr_repr[i]:
+            changed = True
         arr_repr[i] = new_arr
+    #print(changed)
+
+    return (changed, score)
 
 # up swipe function
-def up(arr_repr):
+def up(arr_repr, score=0, changed=False):
     j = 0
     while j < 4:
         arr = []
@@ -103,6 +118,7 @@ def up(arr_repr):
                 i += 1
             else:
                 new_arr.append(arr[i] + arr[i+1])
+                score += arr[i] + arr[i + 1]
                 new_arr.append(0)
                 i += 2
         if len(new_arr) < 4:
@@ -116,12 +132,21 @@ def up(arr_repr):
             else:
                 i += 1
         new_arr = new_arr + [0] * count
+
+        ## New Lines
+        arr = []
+        for i in range(0, 4):
+            arr.append(arr_repr[i][j])
+        if arr != new_arr:
+            changed = True
         for i in range(0, 4):
             arr_repr[i][j] = new_arr[i]
         j += 1
+    return (changed, score)
+
 
 # down swipe function
-def down(arr_repr):
+def down(arr_repr, score=0, changed=False):
     j = 0
     while j < 4:
         arr = []
@@ -144,6 +169,7 @@ def down(arr_repr):
                 i -= 1
             else:
                 new_arr.append(arr[i] + arr[i-1])
+                score += arr[i] + arr[i-1]
                 new_arr.append(0)
                 i -= 2
         if len(new_arr) < 4:
@@ -158,9 +184,19 @@ def down(arr_repr):
             else:
                 i += 1
         new_arr = [0] * count + new_arr
+
+        ## New Lines
+        arr = []
+        for i in range(0, 4):
+            arr.append(arr_repr[i][j])
+        if arr != new_arr:
+            changed = True
         for i in range(0, 4):
             arr_repr[i][j] = new_arr[i]
         j += 1
+    #print(changed)
+    return (changed, score)
+
 
 def random_insert(arr_repr):
     random_number = random.randint(1, 10)
@@ -179,9 +215,6 @@ def random_insert(arr_repr):
     arr_repr[int(pos[0])][int(pos[1])] = insert
 
 
-
-# down(arr_repr)
-# print(arr_repr)
 
 
 
