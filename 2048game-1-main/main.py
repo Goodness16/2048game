@@ -3,10 +3,11 @@ import functions
 # 8-arrays instead of 1 4-by-4 array
 
 # array representation of 4-by-4 grid
-arr_repr = [[2, 0, 0, 2],
+arr_repr = [[2, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
-            [0, 0, 0, 0]]
+            [0, 0, 0, 2]]
+curr_score_value = 0
 
 # left and up borders for all the squares on the 4-by-4 grid
 loc = {'00':[50,50], '01':[225,50], '02':[400,50], '03':[575,50],
@@ -33,22 +34,29 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                functions.left(arr_repr)
-                functions.random_insert(arr_repr)
+                changed, score = functions.left(arr_repr)
+                curr_score_value += score
+                if changed:
+                    functions.random_insert(arr_repr)
                 break
             elif event.key == pygame.K_RIGHT:
-                functions.right(arr_repr)
-                functions.random_insert(arr_repr)
+                changed, score = functions.right(arr_repr)
+                curr_score_value += score
+                if changed:
+                    functions.random_insert(arr_repr)
                 break
             elif event.key == pygame.K_UP:
-                functions.up(arr_repr)
-                functions.random_insert(arr_repr)
+                changed, score = functions.up(arr_repr)
+                curr_score_value += score
+                if changed:
+                    functions.random_insert(arr_repr)
                 break
             elif event.key == pygame.K_DOWN:
-                functions.down(arr_repr)
-                functions.random_insert(arr_repr)
+                changed, score = functions.down(arr_repr)
+                curr_score_value += score
+                if changed:
+                    functions.random_insert(arr_repr)
                 break
-
     # background
     screen.fill((250, 250, 250))
 
@@ -70,6 +78,29 @@ while running:
     curr_score = pygame.Rect(770, 215, 200, 175)
     pygame.draw.rect(screen, (200, 200, 200), curr_score, border_radius=20)
     pygame.draw.lines(screen, (250,250,250), True, [(770,270), (970,270)])
+    font = pygame.font.SysFont(None, 60)
+    img = font.render("SCORE", True, (0, 0, 0))
+    screen.blit(img, (795, 225))
+    if len(str(curr_score_value)) == 1:
+        font = pygame.font.SysFont(None, 100)
+        img = font.render(str(curr_score_value), True, (0, 0, 0))
+        screen.blit(img, (850, 300))
+    if len(str(curr_score_value)) == 2:
+        font = pygame.font.SysFont(None, 100)
+        img = font.render(str(curr_score_value), True, (0, 0, 0))
+        screen.blit(img, (825, 300))
+    if len(str(curr_score_value)) == 3:
+        font = pygame.font.SysFont(None, 100)
+        img = font.render(str(curr_score_value), True, (0, 0, 0))
+        screen.blit(img, (810, 300))
+    if len(str(curr_score_value)) == 4:
+        font = pygame.font.SysFont(None, 90)
+        img = font.render(str(curr_score_value), True, (0, 0, 0))
+        screen.blit(img, (800, 300))
+    if len(str(curr_score_value)) == 5:
+        font = pygame.font.SysFont(None, 80)
+        img = font.render(str(curr_score_value), True, (0, 0, 0))
+        screen.blit(img, (785, 300))
     high_score = pygame.Rect(770, 410, 200, 175)
     pygame.draw.rect(screen, (200, 200, 200), high_score, border_radius=20)
     pygame.draw.lines(screen, (250,250,250), True, [(770,465), (970,465)])
